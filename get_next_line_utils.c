@@ -30,6 +30,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (res);
 }
 
+
 char	*ft_strdup(const char *s1)
 {
 	char	*dst;

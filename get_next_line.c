@@ -32,21 +32,27 @@ static char	*make_line(char *pre_line, int fd)
 	int		bts_read;
 
 	bts_read = 1;
+	//para asegurar que entra en el bucle
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buffer)
 		return (NULL);
 	while (!ft_strchr(pre_line, '\n') && bts_read != 0)
 	{
 		bts_read = read(fd, buffer, BUFFER_SIZE);
+		//buffer puntero al área de memoria donde se almacenan los datos
+		//BUFFER_SIZE el número máx de bytes que se desean leer, en la función real variable de tipo size_t
 		if (bts_read == 0)
 			break ;
+			//si no se leen bytes se llega al final del archivo se sale del bucle
 		if (bts_read == -1)
 		{
 			free(buffer);
 			free(pre_line);
 			return (NULL);
 		}
+		//Si ocurre un error durante la lectura se liberan recursos buffer y pre_line
 		buffer[bts_read] = '\0';
+		//la cadena buffer al final de la cadena tiene que tener el carácter nulo y bts_read son los bytes leídos, que es la función read
 		pre_line = ft_strjoin(pre_line, buffer);
 		if (!pre_line)
 			return (free(buffer), NULL);
@@ -81,6 +87,6 @@ int	main()
 	{
 		printf(line);
 	}
-	close(fd):
+	close(fd);
 	return(0);
 }
