@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cagomez- <cagomez-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/22 17:27:04 by cagomez-          #+#    #+#             */
+/*   Updated: 2024/11/22 17:27:30 by cagomez-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
@@ -29,7 +41,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	res[j] = '\0';
 	return (res);
 }
-
 
 char	*ft_strdup(const char *s1)
 {
@@ -72,5 +83,19 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[i] = '\0';
+	return (str);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	unsigned char	*str;
+	size_t			i;
+
+	i = 0;
+	str = malloc(nmemb * size);
+	if (!str)
+		return (NULL);
+	while (i < nmemb * size)
+		str[i++] = 0;
 	return (str);
 }

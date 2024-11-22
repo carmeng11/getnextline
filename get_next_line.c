@@ -30,6 +30,7 @@ static char	*make_line(char *pre_line, int fd)
 {
 	char	*buffer;
 	int		bts_read;
+	//pre_line abajo es nulo duda??? creo que simplemente así entra en el bucle
 
 	bts_read = 1;
 	//para asegurar que entra en el bucle
@@ -39,7 +40,7 @@ static char	*make_line(char *pre_line, int fd)
 	while (!ft_strchr(pre_line, '\n') && bts_read != 0)
 	{
 		bts_read = read(fd, buffer, BUFFER_SIZE);
-		//buffer puntero al área de memoria donde se almacenan los datos
+		//buffer puntero al área de memoria donde se almacenan los datos que va leyendo
 		//BUFFER_SIZE el número máx de bytes que se desean leer, en la función real variable de tipo size_t
 		if (bts_read == 0)
 			break ;
@@ -56,7 +57,10 @@ static char	*make_line(char *pre_line, int fd)
 		pre_line = ft_strjoin(pre_line, buffer);
 		if (!pre_line)
 			return (free(buffer), NULL);
+			//creo q el bucle se repite con cada nuevo buffer pq hemos declarado la variable pre_line como estática,pero confirmar
 	}
+	//sale del bucle cuando ya ha llegado al final de la lectura y guardado en buffer
+	//liberamos buffer y pre_line
 	free(buffer);
 	return (pre_line);
 }
