@@ -6,7 +6,7 @@
 /*   By: cagomez- <cagomez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:27:04 by cagomez-          #+#    #+#             */
-/*   Updated: 2024/11/25 18:38:08 by cagomez-         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:38:38 by cagomez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (s == NULL)
+		return (0);
 	while (s[i])
 	{
 		i++;
@@ -24,15 +26,19 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+/*char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*res;
 	int		i;
 	int		j;
+	int		size_s1;
+	int		size_s2;
 
 	i = 0;
 	j = 0;
-	res = (char *) malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	size_s1 = ft_strlen(s1);
+	size_s2 = ft_strlen(s2);
+	res = (char *) malloc((size_s1 + size_s2 + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
 	while (s1[i])
@@ -41,7 +47,32 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[i])
 		res[j++] = s2[i++];
 	res[j] = '\0';
+	free(s1);
 	return (res);
+}*/
+char	*ft_strjoin(char *s1, char *s2)
+{
+	int		size_s1;
+	int		size_s2;
+	char	*str;
+	int		i;
+	int		j;
+
+	size_s1 = ft_strlen(s1);
+	size_s2 = ft_strlen(s2);
+	str = malloc(sizeof(char) * (size_s1 + size_s2 + 1));
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (i < size_s1)
+		str[i++] = s1[j++];
+	j = 0;
+	while (j < size_s2)
+		str[i++] = s2[j++];
+	str[i] = '\0';
+	free(s1);
+	return (str);
 }
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)
@@ -72,7 +103,6 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	substr[i] = '\0';
 	return (substr);
 }
-
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	unsigned char	*str;
@@ -89,22 +119,18 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 char	*ft_strchr(const char *s, int c)
 {
-	unsigned int	i;
-	char			cc;
+	int	i;
 
 	i = 0;
-	cc = (char) c;
-	while (s[i])
+	if (s == NULL)
+		return (NULL);
+	while (s[i] != '\0')
 	{
-		if (*s == cc)
-		{
-			return ((char *)s);
-		}
-		s++;
+		if ((char)c == s[i])
+			return ((char *)&s[i]);
+		i++;
 	}
-	if (*s == cc)
-	{
-		return ((char *)s);
-	}
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
 	return (NULL);
 }

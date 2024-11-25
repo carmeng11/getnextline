@@ -6,39 +6,37 @@
 /*   By: cagomez- <cagomez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:40:26 by cagomez-          #+#    #+#             */
-/*   Updated: 2024/11/25 18:41:23 by cagomez-         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:16:05 by cagomez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
 
-static void	take_the_rest(char **pre_line, char **line)
+static void	take_the_rest(char **storage, char **line)
 {
 	char	*temp;
 	int		i;
 
 	i = 0;
-	while (*pre_line[i] != '\0' && *pre_line[i] != '\n')
+	while (storage[0][i] != '\0' && storage[0][i] != '\n')
 		i++;
-	if (*pre_line[i])
+	if (storage[0][i])
 		i++;
-	*line = ft_substr(*pre_line, 0, i);
-	if (*pre_line[i])
+	*line = ft_substr(*storage, 0, i);
+	if (storage[0][i])
 	{
-		temp = ft_substr(*pre_line, i, (ft_strlen(*pre_line) - i));
-		free(*pre_line);
-		*pre_line = temp;
+		temp = ft_substr(*storage, i, (ft_strlen(*storage) - i));
+		free(*storage);
+		*storage = temp;
 	}
 	else
 	{
-		free(*pre_line);
-		*pre_line = NULL;
+		free(*storage);
+		*storage = NULL;
 	}
 }
 
-static char	*make_line(char *pre_line, int fd)
+static char	*make_line(char *storage, int fd)
 {
 	char	*buffer;
 	int		bts_read;
@@ -47,50 +45,59 @@ static char	*make_line(char *pre_line, int fd)
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buffer)
 		return (NULL);
-	while (!ft_strchr(pre_line, '\n') && bts_read != 0)
+	while (!ft_strchr(storage, '\n') && bts_read != 0)
 	{
 		bts_read = read(fd, buffer, BUFFER_SIZE);
 		if (bts_read == 0)
-			break ;
+			break;
 		if (bts_read == -1)
 		{
 			free(buffer);
-			free(pre_line);
+			free(storage);
 			return (NULL);
 		}
 		buffer[bts_read] = '\0';
-		pre_line = ft_strjoin(pre_line, buffer);
-		if (!pre_line)
+		storage = ft_strjoin(storage, buffer);
+		if (!storage)
 			return (free(buffer), NULL);
 	}
 	free(buffer);
-	return (pre_line);
+	return (storage);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*pre_line = NULL;
+	static char	*storage = NULL;
 	char		*line;
 
 	line = NULL;
 	if (fd == -1)
 		return (NULL);
-	pre_line = make_line(pre_line, fd);
-	if (pre_line == NULL)
+	storage = make_line(storage, fd);
+	if (storage == NULL)
 		return (NULL);
-	take_the_rest(&pre_line, &line);
+	take_the_rest(&storage, &line);
 	return (line);
 }
 
-/*int	main(void)
+int main()
 {
-	int fd = open("testing.txt", O_RDONLY);
-	char	*line;
+	int fd;
+	char *line;
 
-	while((line = get_next_line(fd)) != NULL)
+	fd = open("tester.txt", O_RDONLY);
+	if (fd == -1)
 	{
-		printf(line);
+		perror("Error abriendo el archivo");
+		return (1);
+	}
+	line = get_next_line(fd);
+	while (line)
+	{
+		printf("%s",line); // Sin "\n".
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
-	return(0);
-}*/
+	return (0);
+}
