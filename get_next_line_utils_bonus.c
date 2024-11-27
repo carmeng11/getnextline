@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cagomez- <cagomez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/22 17:27:04 by cagomez-          #+#    #+#             */
-/*   Updated: 2024/11/27 20:15:40 by cagomez-         ###   ########.fr       */
+/*   Created: 2024/11/27 18:15:55 by cagomez-          #+#    #+#             */
+/*   Updated: 2024/11/27 18:19:08 by cagomez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	res = malloc((size_s1 + size_s2 + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
-	while (i < size_s1)
+	while (j < size_s1)
 		res[j++] = s1[i++];
 	i = 0;
 	while (i < size_s2)
